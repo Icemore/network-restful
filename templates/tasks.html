@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Tasks</title>
+</head>
+<body>
+
+<p> List of active tasks. </p>
+<table border="1">
+    {% for task in tasks %}
+        <tr>
+            <td><a href="{{ url_for('task', id=task.id) }}">task{{ task.id }}</a></td>
+            <td>{{ task.date_from }}</td>
+            <td>{{ task.date_to }}</td>
+            <td>{{ task.cur_id }}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+
+</body>
+</html>

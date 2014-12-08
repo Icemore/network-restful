@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+
+<h2>Currency price service.</h2>
+
+<p>Go to <a href="{{ url_for("currency", date="10/09/2010") }}">{{ url_for("currency", date="10/09/2010") }}</a> for daily prices. <br>
+    Date format is dd/mm/yyyy.
+</p>
+
+<p>Using tasks you can lookup history of prices during certain period. <br>
+    Go to <a href="{{ url_for("tasks") }}">{{ url_for("tasks") }}</a> for list of active tasks.</p>
+
+<p>You can add (PUT), delete (DELETE), update (POST) and read (GET) tasks. <br>
+    To add a task you want to send PUT request to tasks page. The rest of actions is performed on a specific task page (e.g. {{ url_for("task", id=1) }} <br>
+    Task parameters consist of
+    <ul>
+        <li>date_from - first date in range</li>
+        <li>date_to - last date in range</li>
+        <li>cur_id - currency id: either USD or Euro</li>
+    </ul>
+
+    Parameters can be sent as json, xml or form (application/x-www-form-urlencoded). See examples of json and xml below. <br>
+    Tasks and daily currency prices can also be received as json, xml, plain text or html depending on the Accept header of the request.
+
+<p>
+    {<br>
+    "date_from": "14/10/2010",<br>
+    "date_to": "14/11/2010",<br>
+    "cur_id": "Euro"<br>
+    }<br>
+</p>
+
+<p>
+    &lt;task&gt; <br/>
+    &lt;date_from&gt;10/11/2014&lt;/date_from&gt;<br/>
+    &lt;date_to&gt;15/11/2014&lt;/date_to&gt;<br/>
+    &lt;cur_id&gt;USD&lt;/cur_id&gt;<br/>
+    &lt;/task&gt;
+</p>
+
+</body>
+</html>
