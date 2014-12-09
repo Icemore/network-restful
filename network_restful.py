@@ -13,6 +13,8 @@ app = Flask(__name__)
 app.config.update(dict(
     DATABASE=os.path.join(app.root_path, 'currency.db'),
     DEBUG=False,
+    HOST="0.0.0.0",
+    PORT=80
 ))
 
 
@@ -266,4 +268,4 @@ def id_to_xml(id):
 
 
 if __name__ == '__main__':
-    app.run(debug=app.config['DEBUG'])
+    app.run(host=app.config['HOST'], debug=app.config['DEBUG'], port=app.config['PORT'])
