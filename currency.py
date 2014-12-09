@@ -1,14 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
 
-
 currency_codes = {'USD': 'R01235', 'Euro': 'R01239'}
 date_format = "%d/%m/%Y"
 
 
 def get_currency_price(date):
-    return {'USD': 34.23, 'Euro': 40.50}
-
     date = ensure_str(date)
 
     url = "http://www.cbr.ru/scripts/XML_daily.asp"

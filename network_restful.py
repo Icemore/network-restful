@@ -55,12 +55,12 @@ def currency(date):
         res = get_currency_price(date)
 
         if request.headers['Accept'] == 'text/plain':
-            return to_plain_text(date, res)
+            return currency_to_plain_text(date, res)
         elif request.headers['Accept'] == 'application/json':
             return jsonify(res)
         elif request.headers['Accept'] == 'application/xml' or \
                         request.headers['Accept'] == 'text/xml':
-            return to_xml(res)
+            return currency_to_xml(res)
         else:
             return render_template("currency.html", date=date.strftime(date_format), price=res)
 
@@ -225,7 +225,7 @@ def add_task(data):
     return cur.lastrowid
 
 
-def to_plain_text(date, price):
+def currency_to_plain_text(date, price):
     txt = "Currency price on %s\n\n" % (date.strftime(date_format),)
 
     for k, v in price.items():
@@ -243,7 +243,7 @@ def task_to_plain_text(task, data):
     return Response(txt, mimetype='text/plain')
 
 
-def to_xml(price):
+def currency_to_xml(price):
     root = etree.Element("currency")
     for k, v in price.items():
         etree.SubElement(root, k).text = v
