@@ -13,10 +13,10 @@
 </p>
 
 <p>Using tasks you can lookup history of prices during certain period. <br>
-    Go to <a href="{{ url_for("tasks") }}">{{ url_for("tasks") }}</a> for list of active tasks.</p>
+    Go to <a href="{{ url_for(".tasks") }}">{{ url_for(".tasks") }}</a> for list of active tasks.</p>
 
 <p>You can add (PUT), delete (DELETE), update (POST) and read (GET) tasks. <br>
-    To add a task you want to send PUT request to tasks page. The rest of actions is performed on a specific task page (e.g. {{ url_for("task", id=1) }} <br>
+    To add a task you want to send PUT request to tasks page. The rest of actions is performed on a specific task page (e.g. {{ url_for(".task", task_id=1) }})<br>
     Task parameters consist of
     <ul>
         <li>date_from - first date in range</li>
