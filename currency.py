@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+from datetime import datetime
 
 currency_codes = {'USD': 'R01235', 'Euro': 'R01239'}
 date_format = "%d/%m/%Y"
@@ -13,15 +14,37 @@ def get_currency_price(date):
     request.raise_for_status()
     soup = BeautifulSoup(request.text)
 
+    if not check_date(soup, date):
+        return None
+
     res = {}
     for char_code, cur_id in currency_codes.items():
         tag = soup.find(id=cur_id)
         if tag is None or tag.value is None:
-            raise ValueError()
+            return None
 
         res[char_code] = float(tag.value.string.replace(',', '.'))
 
     return res
+
+
+def check_date(soup, expected):
+    got_curs = soup.find('valcurs')
+    if got_curs is None:
+        return None
+    got = got_curs['date']
+
+    try:
+        try:
+            got = datetime.strptime(got, "%d.%m.%Y")
+            got = ensure_str(got)
+        except ValueError:
+            pass
+        expected = ensure_str(expected)
+
+        return got == expected
+    except ValueError:
+        return False
 
 
 def get_price_range(date_from, date_to, cur_id):

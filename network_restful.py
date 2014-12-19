@@ -35,6 +35,9 @@ def currency(date):
         date = datetime.strptime(date, date_format)
         price = get_currency_price(date)
 
+        if price is None:
+            abort(404)
+
         return respond(CurrencyResponse(price, date))
     except ValueError:
         abort(400)
