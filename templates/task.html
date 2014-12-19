@@ -9,7 +9,7 @@
     <p> Prices of {{ task['cur_id'] }} from {{ task['date_from'] }} to {{ task['date_to'] }}</p>
 
     <table border="1">
-        {% for date, val in data.iteritems() %}
+        {% for date, val in data %}
             <tr>
                 <td>{{ date }}</td>
                 <td>{{ val }}</td>

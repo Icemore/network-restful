@@ -2,9 +2,9 @@ from flask.views import MethodView
 from flask import Response, jsonify, render_template, abort
 from lxml import etree
 from task_operations import *
-from currency import get_price_range
+from currency import get_price_range, date_format
 from content_parsing import respond, get_request_data
-
+from datetime import datetime
 
 class TaskView(MethodView):
     def get_task_or_die(self, task_id):
@@ -74,7 +74,8 @@ class TaskResponse:
         return Response(txt, mimetype='text/plain')
 
     def to_html(self):
-        return render_template("task.html", task=self.task, data=self.data)
+        data = sorted(self.data.items(), key=lambda (k, v): datetime.strptime(k, "%d.%m.%Y"))
+        return render_template("task.html", task=self.task, data=data)
 
 
 class TaskIdResponse:
