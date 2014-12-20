@@ -51,10 +51,11 @@ class TaskResponse:
     def __init__(self, task, data):
         self.task = task
         self.data = data
+        self.sorted_data = sorted(data.items(), key=lambda (k, v): datetime.strptime(k, "%d.%m.%Y"))
 
     def to_xml(self):
         root = etree.Element("history")
-        for k, v in self.data.items():
+        for k, v in self.sorted_data:
             etree.SubElement(root, "record", date=k).text = str(v)
 
         xml = etree.tostring(root, pretty_print=True)
@@ -68,15 +69,13 @@ class TaskResponse:
                                                   self.task['date_from'],
                                                   self.task['date_to'])
 
-        for k, v in self.data.items():
+        for k, v in self.sorted_data:
             txt += "%s %s rub\n" % (k, v)
 
         return Response(txt, mimetype='text/plain')
 
     def to_html(self):
-        data = sorted(self.data.items(), key=lambda (k, v): datetime.strptime(k, "%d.%m.%Y"))
-        return render_template("task.html", task=self.task, data=data)
-
+        return render_template("task.html", task=self.task, data=self.sorted_data)
 
 class TaskIdResponse:
     def __init__(self, task_id):
