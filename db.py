@@ -1,16 +1,16 @@
-from flask import g
+from flask import g, current_app
 from sqlite3 import dbapi2 as sqlite3
 from contextlib import closing
 
 def connect_db():
-    rv = sqlite3.connect(g.app.config['DATABASE'])
+    rv = sqlite3.connect(current_app.config['DATABASE'])
     rv.row_factory = sqlite3.Row
     return rv
 
 
 def init_db():
     with closing(connect_db()) as db:
-        with g.app.open_resource('schema.sql', mode='r') as f:
+        with current_app.open_resource('schema.sql', mode='r') as f:
             db.cursor().executescript(f.read())
         db.commit()
 
