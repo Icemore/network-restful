@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 
 *.db
+*.log
 
 # User-specific stuff:
 .idea/workspace.xml

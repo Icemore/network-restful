@@ -1,7 +1,8 @@
-from datetime import datetime
+import logging
+from logging.handlers import RotatingFileHandler
 import os
 
-from flask import Flask, abort, render_template, g
+from flask import Flask, abort, render_template, send_file, request
 from requests.exceptions import HTTPError
 
 from currency_view import CurrencyResponse
@@ -16,18 +17,39 @@ app.config.update(dict(
     DATABASE=os.path.join(app.root_path, 'currency.db'),
     DEBUG=False,
     HOST="0.0.0.0",
-    PORT=80
+    PORT=80,
+    LOG_FILENAME='logs.log'
 ))
 app.teardown_appcontext_funcs.append(close_db)
 
+@app.before_first_request
+def setup_logging():
+    app.logger.setLevel(logging.INFO)
+    handler = RotatingFileHandler(
+        app.config['LOG_FILENAME'],
+        maxBytes=1024 * 1024 * 100
+        )
+
+    app.logger.addHandler(handler)
+
 @app.before_request
-def init():
-    g.app = app
+def pre_request_logging():
+    app.logger.info('\t'.join([
+        datetime.today().ctime(),
+        request.remote_addr,
+        request.method,
+        request.url,
+        request.data,
+        ', '.join([': '.join(x) for x in request.headers])])
+    )
 
 @app.route('/')
 def index():
     return render_template("index.html")
 
+@app.route('/logs')
+def logs():
+    return send_file(app.config['LOG_FILENAME'], mimetype='text/plain')
 
 @app.route('/currency/<path:date>')
 def currency(date):
